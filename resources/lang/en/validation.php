@@ -28,7 +28,7 @@ return [
         'array'   => 'The :attribute must have between :min and :max items.',
     ],
     'boolean'              => 'The :attribute field must be true or false.',
-    'confirmed'            => 'The :attribute confirmation does not match.',
+    'confirmed'            => 'Unjeta :attribute se ne poklapa.',
     'date'                 => 'The :attribute is not a valid date.',
     'date_format'          => 'The :attribute does not match the format :format.',
     'different'            => 'The :attribute and :other must be different.',
@@ -37,7 +37,7 @@ return [
     'distinct'             => 'The :attribute field has a duplicate value.',
     'email'                => 'The :attribute must be a valid email address.',
     'exists'               => 'The selected :attribute is invalid.',
-    'filled'               => 'The :attribute field is required.',
+    'filled'               => 'Polje :attribute je obavezno.',
     'image'                => 'The :attribute must be an image.',
     'in'                   => 'The selected :attribute is invalid.',
     'in_array'             => 'The :attribute field does not exist in :other.',
@@ -61,7 +61,7 @@ return [
     'numeric'              => 'The :attribute must be a number.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
-    'required'             => 'The :attribute field is required.',
+    'required'             => 'Polje :attribute je obavezno.',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
@@ -77,7 +77,7 @@ return [
     ],
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => 'The :attribute has already been taken.',
+    'unique'               => 'Polje :attribute je zauzeto.',
     'url'                  => 'The :attribute format is invalid.',
 
     /*
@@ -108,6 +108,14 @@ return [
     |
     */
 
-    'attributes' => [],
+
+    'attributes' => [
+
+        "name" => "ime",
+        "password" => "šifra",
+        "email" => "e-mail adresa",
+
+
+    ]
 
 ];

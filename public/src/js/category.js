@@ -2,8 +2,20 @@
  * Created by ilija on 4/29/17.
  */
 
-function resetId(){
 
+$(document).ready(function(){
+
+    $("#deleteForm").submit(function(e){
+        e.preventDefault();
+
+       if(confirm("Are you sure"))
+           $(this).unbind('submit').submit();
+       else
+           return false;
+    });
+});
+
+function resetId(){
     $("#category_id").val("-1");
 }
 
@@ -16,9 +28,4 @@ function updateCategory(category_id){
     $("#category_id").val(category_id);
     $("#category_name").val(name);
     $("#description").val(description);
-}
-
-function deleteCategory(category_id){
-
-
 }

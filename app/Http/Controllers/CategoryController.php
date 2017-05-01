@@ -27,14 +27,22 @@ class CategoryController extends Controller
             'category_name' => 'required'
         ]);
 
+        $category_id = $request["category_id"];
         $category_name = $request["category_name"];
         $description = $request["description"];
 
-        $category = new Category();
-        $category->name = $category_name;
-        $category->description = $description;
-
-        $saved = $category->save();
+        if($category_id == "-1"){
+            $category = new Category();
+            $category->name = $category_name;
+            $category->description = $description;
+            $saved = $category->save();
+        }
+        else{
+            $category = Category::find($category_id);
+            $category->name = $category_name;
+            $category->description = $description;
+            $saved = $category->update();
+        }
 
         if($saved)
             $message = "Dodato uspješno";
@@ -43,5 +51,21 @@ class CategoryController extends Controller
 
         return redirect()->route('add_category')->with(['message' => $message]);
 
+    }
+
+    public function deleteCategory($category_id){
+
+        $category = Category::findOrFail($category_id);
+
+        try{
+            if ($category->delete() === false)
+                throw new \Exception("Greška prilikom brisanja!");
+            $message = "Obrisano usjpješno.";
+        }
+        catch(\Exception $e){
+            $message = $e->getMessage();
+        }
+
+        return redirect()->route('add_category')->with(['message' => $message]);
     }
 }

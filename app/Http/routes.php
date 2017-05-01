@@ -46,6 +46,12 @@ Route::get('/admin/add_product', [
     'middleware' => 'auth'
 ]);
 
+Route::post('/admin/save_product', [
+    'uses' => 'ProductController@saveProduct',
+    'as' => 'product.save',
+    'middleware' => 'auth'
+]);
+
 Route::get('/admin/add_category', [
     'uses' => 'CategoryController@index',
     'as' => 'add_category',
@@ -55,5 +61,11 @@ Route::get('/admin/add_category', [
 Route::post('/admin/save_category', [
     'uses' => 'CategoryController@saveCategory',
     'as' => 'category.save',
+    'middleware' => 'auth'
+]);
+
+Route::get('/admin/category/delete/{category_id}', [
+    'uses' => 'CategoryController@deleteCategory',
+    'as' => 'category.delete',
     'middleware' => 'auth'
 ]);

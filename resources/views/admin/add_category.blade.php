@@ -25,19 +25,26 @@
                     <th>Opis</th>
                     <th>Akcije</th>
                 </tr>
+                @if($categories->isEmpty())
+                    <tr>
+                        <td>Nema kategorija</td>
+                    </tr>
+                @else
                 @foreach($categories as $category)
                     <tr id="cat{{$category->id}}">
                         <td>{{$category->name}}</td>
                         <td>{{$category->description}}</td>
                         <td>
-
                             <div class="btn-group" role="group" aria-label="...">
                                 <button type="button" class="btn btn-default btn-sm" onclick="updateCategory({{$category->id}})">Izmjeni</button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteCategory({{$category->id}})">Izbriši</button>
+                                <form id="deleteForm" style="display: inline-block;" method="get" action="/admin/category/delete/{{$category->id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Izbriši</button>
+                                </form>
                             </div>
                         </td>
                     </tr>
                 @endforeach
+                @endif
             </table>
         </div>
     </div>
@@ -54,7 +61,7 @@
                     <h4 class="modal-title">Edit Post</h4>
                 </div>
                 <div class="modal-body">
-                        <input type="hidden" id="category_id" value="-1">
+                        <input type="hidden" id="category_id" name="category_id" value="-1">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -84,5 +91,8 @@
     <script>
         var token = '{{ Session::token() }}';
     </script>
+@endsection
+
+@section("js-end")
     <script src="{{ URL::to('src/js/category.js') }}" type="text/javascript"></script>
 @endsection
