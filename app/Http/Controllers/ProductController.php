@@ -22,6 +22,7 @@ class ProductController extends Controller
     {
 
         $products =  \DB::table('product')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
             ->leftJoin('price', 'price.product_id', '=', 'product.id')
             ->leftJoin('tax', 'tax.product_id', '=', 'product.id')
             ->select(
@@ -29,6 +30,7 @@ class ProductController extends Controller
                 'product.name',
                 'product.description',
                 'product.category_id',
+                'category.name as category_name',
                 'price.price',
                 'tax.tax',
                 'product.created_at',
@@ -53,6 +55,8 @@ class ProductController extends Controller
 
     public function saveProduct(Request $request)
     {
+        $saved_price = true;
+        $saved_tax = true;
 
         $this->validate($request,[
             'files' => 'required',
@@ -83,6 +87,7 @@ class ProductController extends Controller
 
 
         if($product_id == "-1"){
+
             $product = new Product();
             $product->name = $product_name;
             $product->category_id = $category_id;
@@ -114,10 +119,43 @@ class ProductController extends Controller
             }
         }
         else{
-//            $category = Category::find($category_id);
-//            $category->name = $category_name;
-//            $category->description = $description;
-//            $saved = $category->update();
+
+            $product = Product::find($product_id);
+            $product->name = $product_name;
+            $product->description = $description;
+            $product->category_id = $category_id;
+            $saved = $product->update();
+
+            if($saved){
+
+                $old_price = $request["old_price"];
+                $old_tax = $request["old_tax"];
+
+                if($product_price != $old_price){
+
+                    $price = new Price();
+                    $price->price = $product_price;
+                    $price->product_id = $product_id;
+                    $saved_price = $price->save();
+                }
+                if($product_tax != $old_tax){
+
+                    $tax = new Tax();
+                    $tax->tax = $product_tax;
+                    $tax->product_id = $product_id;
+                    $saved_tax = $tax->save();
+                }
+
+                foreach($images_array as $im){
+                    $image = new ProductImage();
+                    $image->product_id = $product_id;
+                    $image->image = $im;
+                    $image->main = 0;
+                    $saved_image = $image->save();
+                    if(!$saved_image)
+                        break;
+                }
+            }
         }
 
         if($saved && $saved_price && $saved_tax)
@@ -127,6 +165,15 @@ class ProductController extends Controller
 
         return redirect()->route('add_product')->with(['message' => $message]);
 
+    }
+
+    public function showHistory($product_id){
+
+        $product = Product::find($product_id);
+        $prices = $product->prices()->orderBy('created_at', 'desc')->get();
+        $taxes = $product->taxes()->orderBy('created_at', 'desc')->get();
+
+        return response()->json(['prices' => $prices, "taxes" => $taxes, "product" => $product], 200);
     }
 
 }

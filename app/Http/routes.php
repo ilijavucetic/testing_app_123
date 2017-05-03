@@ -69,3 +69,9 @@ Route::get('/admin/category/delete/{category_id}', [
     'as' => 'category.delete',
     'middleware' => 'auth'
 ]);
+
+Route::get('/admin/product/history/{product_id}', [
+    'uses' => 'ProductController@showHistory',
+    'as' => 'product.history',
+    'middleware' => 'auth'
+]);

@@ -19,26 +19,30 @@
             </div>
 
             <!-- Table -->
-            <table class="table">
-                <tr>
-                    <th>Naziv</th>
-                    <th>Kategorija</th>
-                    <th>Cijena</th>
-                    <th>Porez</th>
-                    <th>Opis</th>
-                    <th>Akcije</th>
-                </tr>
-                @if(empty($products))
+            <table id="table" class="display" width="100%" cellspacing="0">
+                <thead>
                     <tr>
-                        <td>Nema proizvoda</td>
+                        <td>Naziv</td>
+                        <td>Kategorija</td>
+                        <td>Cijena</td>
+                        <td>Porez</td>
+                        <td>Opis</td>
+                        <td>Akcije</td>
                     </tr>
+                </thead>
+                <tbody>
+                @if(empty($products))
+                    <tbody>
+                        <tr>
+                            <td>Nema proizvoda</td>
+                        </tr>
                 @else
                     @foreach($products as $product)
                         <tr id="prod{{$product->id}}">
                             <td>{{$product->name}}</td>
-                            <td>{{$product->category_id}}</td>
-                            <td>{{$product->price}}</td>
-                            <td>{{$product->tax}}</td>
+                            <td><span data-id="{{$product->category_id}}">{{$product->category_name}}</span></td>
+                            <td><span data-price="{{$product->price}}">{{$product->price}}</span></td>
+                            <td><span data-tax="{{$product->tax}}">{{$product->tax}}</span></td>
                             <td>{{$product->description}}</td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="...">
@@ -46,11 +50,13 @@
                                     <form id="deleteForm" style="display: inline-block;" method="get" action="/admin/product/delete/{{$product->id}}">
                                         <button type="submit" class="btn btn-danger btn-sm">Izbriši</button>
                                     </form>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="showHistory({{$product->id}})">Istorija</button>
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                 @endif
+                </tbody>
             </table>
         </div>
     </div>
@@ -68,6 +74,8 @@
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="product_id" name="product_id" value="-1">
+                        <input type="hidden" id="old_price" name="old_price" value="-1">
+                        <input type="hidden" id="old_tax" name="old_tax" value="-1">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -134,6 +142,26 @@
                         <button type="submit" class="btn btn-default" id="modal-save">Sačuvaj</button>
                     </div>
                 </form>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="history-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Proizvod</h4>
+                </div>
+                <div class="modal-body" id="history-modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Zatvori</button>
+                    <button type="submit" class="btn btn-default" id="modal-save">Sačuvaj</button>
+                </div>
             </div>
 
         </div>
