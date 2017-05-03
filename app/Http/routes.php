@@ -46,6 +46,12 @@ Route::get('/admin/add_product', [
     'middleware' => 'auth'
 ]);
 
+Route::get('/admin/add_user', [
+    'uses' => 'UserController@index',
+    'as' => 'add_user',
+    'middleware' => 'auth'
+]);
+
 Route::post('/admin/save_product', [
     'uses' => 'ProductController@saveProduct',
     'as' => 'product.save',

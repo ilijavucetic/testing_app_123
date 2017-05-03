@@ -12,7 +12,7 @@
            Kategorije
         </a>
         <a href="{{ route('add_product') }}" class="list-group-item">Proizvodi</a>
-        <a href="#" class="list-group-item">Korisnici</a>
+        <a href="{{ route('add_user') }}" class="list-group-item">Korisnici</a>
     </div>
 
     <script>
