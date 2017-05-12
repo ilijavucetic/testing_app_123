@@ -19,54 +19,56 @@
             </div>
 
             <!-- Table -->
-            <table id="table" class="display" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <td>Ime</td>
-                    <td>Prezime</td>
-                    <td>E-mail</td>
-                    <td>Šifra</td>
-                    <td>Datim rođenja</td>
-                    <td>Adresa</td>
-                    <td>Grad</td>
-                    <td>Država</td>
-                    <td>Telefon</td>
-                    <td>Admin</td>
-                    <td>Akcije</td>
-                </tr>
-                </thead>
-                <tbody>
-                @if(empty($users))
-                <tbody>
-                <tr>
-                    <td>Nema korisnika</td>
-                </tr>
-                @else
-                    @foreach($users as $user)
-                        <tr id="user{{$user->id}}">
-                            <td>{{$user->name}}</td>
-                            <td>{{$user->last_name}}</td>
-                            <td>{{$user->password}}</td>
-                            <td>{{$user->date_of_birth}}</td>
-                            <td>{{$user->address}}</td>
-                            <td>{{$user->city}}</td>
-                            <td>{{$user->country}}</td>
-                            <td>{{$user->phone}}</td>
-                            <td>{{$user->is_admin}}</td>
 
-                            <td>
-                                <div class="btn-group" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-default btn-sm" onclick="updateUser({{$user->id}})">Izmjeni</button>
-                                    <form id="deleteForm" style="display: inline-block;" method="get" action="/admin/user/delete/{{$user->id}}">
-                                        <button type="submit" class="btn btn-danger btn-sm">Izbriši</button>
-                                    </form>
-                                </div>
-                            </td>
+            <div>
+                <table id="table" class="display" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <td>Ime</td>
+                        <td>Prezime</td>
+                        <td>E-mail</td>
+                        <td>Šifra</td>
+                        <td>Datim rođenja</td>
+                        <td>Adresa</td>
+                        <td>Grad</td>
+                        <td>Država</td>
+                        <td>Telefon</td>
+                        <td>Admin</td>
+                        <td>Akcije</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if(empty($users))
+                        <tr>
+                            <td>Nema korisnika</td>
                         </tr>
-                    @endforeach
-                @endif
-                </tbody>
-            </table>
+                    @else
+                        @foreach($users as $user)
+                            <tr id="user{{$user->id}}">
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->last_name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>{{$user->password}}</td>
+                                <td>{{$user->date_of_birth}}</td>
+                                <td>{{$user->address}}</td>
+                                <td>{{$user->city}}</td>
+                                <td>{{$user->country}}</td>
+                                <td>{{$user->phone}}</td>
+                                <td>{{$user->is_admin}}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <button type="button" class="btn btn-default btn-sm" onclick="updateUser({{$user->id}})">Izmjeni</button>
+                                        <form id="deleteForm" style="display: inline-block;" method="get" action="/admin/user/delete/{{$user->id}}">
+                                            <button type="submit" class="btn btn-danger btn-sm">Izbriši</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -220,5 +222,5 @@
 
 @section("js-end")
     <script src="{{ URL::to('src/js/bootstrap-filestyle.min.js') }}" type="text/javascript"></script>
-    <script src="{{ URL::to('src/js/product.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::to('src/js/user.js') }}" type="text/javascript"></script>
 @endsection
