@@ -4,7 +4,7 @@
 
     <div class="container-fluid">
         <div class="row well well-sm">
-            <div class="col-xs-2" style="float:left;width:18%;height:100%;">
+            <div class="col-xs-2" style="float:left;height:100%;">
                 <div class="list-group">
                     @foreach($categories as $category)
                         <a href="/category/{{$category->id}}" class="list-group-item">{{$category->name}}</a>
@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-8">
+            <div class="col-xs-10">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <div class="container-fluid">
@@ -31,7 +31,7 @@
                                                 <div class="row">
 
                                                     <div class="col-sm-12" style="padding: 10px; align: center">
-                                                        <a href="/pages/product/{{$product->id}}">
+                                                        <a href="/product/{{$product->id}}">
                                                             <img style="max-width:100%;max-height:100%;"
                                                                  class="img-rounded"
                                                                  src="http://lorempixel.com/350/250/technics/?{{$product->id}}">
@@ -44,7 +44,7 @@
                                                 <div class="row">
 
                                                     <div class="col-sm-12">
-                                                        <a href="/pages/product/{{$product->id}}">
+                                                        <a href="/product/{{$product->id}}">
                                                             <h3>{{$product->name}}</h3>
                                                         </a>
                                                     </div>

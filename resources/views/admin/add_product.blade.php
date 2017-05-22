@@ -5,9 +5,8 @@
 @stop
 
 @section('content')
+    <div class="container">
     @include('includes.message-block')
-
-
     <div class="container">
 
         <div class="panel panel-default">
@@ -165,6 +164,7 @@
             </div>
 
         </div>
+    </div>
     </div>
     <script>
         var token = '{{ Session::token() }}';

@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+    <div class="container">
     @include('includes.message-block')
 
 
@@ -87,6 +88,7 @@
             </div>
 
         </div>
+    </div>
     </div>
     <script>
         var token = '{{ Session::token() }}';

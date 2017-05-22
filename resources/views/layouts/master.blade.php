@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ URL::to('src/css/jquery-ui.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/responsiveslides.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/datatable.css') }}">
+    <link rel="stylesheet" href="{{ URL::to('src/css/random.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/main.css') }}">
 <style>
     .has-error {
@@ -18,7 +19,7 @@
 </head>
 <body>
     @include('includes.header')
-<div class="container">
+<div class="">
     @yield('content')
 </div>
     <script src="{{ URL::to('src/js/jquery.js') }}" type="text/javascript"></script>

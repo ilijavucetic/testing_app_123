@@ -4,7 +4,7 @@
 
     <div class="container-fluid">
         <div class="row well well-sm">
-            <div class="col-xs-2" style="float:left;width:18%;height:100%;">
+            <div class="col-xs-2" style="float:left;height:100%;">
                 <div class="list-group">
                     @foreach($categories as $category)
                         <a href="/category/{{$category->id}}" class="list-group-item">{{$category->name}}</a>
@@ -28,13 +28,53 @@
                         <li>
                             <div class="row">
                                 <div class="col-xs-7">
-                                    <a href="/pages/product/{{$discount_product->id}}">
+                                    <a href="/product/{{$discount_product->id}}">
                                         <img
                                                 class='slide-prod-img'
                                                 src="http://lorempixel.com/350/250/technics/?{{$discount_product->id}}" alt="">
 
                                         <p class="caption">{{$discount_product->name}}</p></a>
                                 </div>
+                                <div class="col-xs-5">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>{{$discount_product->name}}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h5>{{$discount_product->description}}</h5>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="new-product-price"
+                                                 value="{{$discount_product->price}}">
+                                                <h3>{{'Price: '.$discount_product->price}} </h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>
+                                                <a href="/product/{{$discount_product->id}}">{{$discount_product->name}}</a>
+                                            </h4>
+                                            <h5>
+                                                <a href="/seller/"></a>Number of comments</h5>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-xs-12">
+                                            <a href="/special_offer">
+                                                Browse all
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                             </div>
                         </li>
