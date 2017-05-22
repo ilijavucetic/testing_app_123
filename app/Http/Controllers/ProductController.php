@@ -176,4 +176,87 @@ class ProductController extends Controller
         return response()->json(['prices' => $prices, "taxes" => $taxes, "product" => $product], 200);
     }
 
+    public function list_all(){
+
+        $products =  \DB::table('product')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('price', 'price.product_id', '=', 'product.id')
+            ->leftJoin('tax', 'tax.product_id', '=', 'product.id')
+            ->leftJoin('product_image', 'product_image.product_id', '=', 'product.id')
+            ->select(
+                'product.id',
+                'product.name',
+                'product.description',
+                'product.category_id',
+                'category.name as category_name',
+                'price.price',
+                'tax.tax',
+                'image',
+                'product.created_at',
+                'product.updated_at'
+            )->groupBy('product.id')->orderBy('product.id', 'asc')
+            ->orderBy('price.id', 'asc')->orderBy('product_image.id', 'asc')->limit(5)->get();
+
+
+        $array = json_decode(json_encode($products), true);
+        $data = [];
+        foreach($array as $pr){
+            $data[$pr["id"]] = $pr;
+        }
+        $products = json_decode(json_encode($data));
+
+        $categories = Category::orderBy('created_at', 'desc')->get();
+
+        return view('home', ["products" => $products, "categories" => $categories]);
+
+    }
+
+    public function show_category(){
+
+        $products =  \DB::table('product')
+            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+            ->leftJoin('price', 'price.product_id', '=', 'product.id')
+            ->leftJoin('tax', 'tax.product_id', '=', 'product.id')
+            ->leftJoin('product_image', 'product_image.product_id', '=', 'product.id')
+            ->select(
+                'product.id',
+                'product.name',
+                'product.description',
+                'product.category_id',
+                'category.name as category_name',
+                'price.price',
+                'tax.tax',
+                'image',
+                'product.created_at',
+                'product.updated_at'
+            )->groupBy('product.id')->orderBy('product.id', 'asc')
+            ->orderBy('price.id', 'asc')->orderBy('product_image.id', 'asc')->limit(5)->get();
+
+
+        $array = json_decode(json_encode($products), true);
+        $data = [];
+        foreach($array as $pr){
+            $data[$pr["id"]] = $pr;
+        }
+        $products = json_decode(json_encode($data));
+
+        $categories = Category::orderBy('created_at', 'desc')->get();
+
+        return view('category', ["products" => $products, "categories" => $categories]);
+
+
+
+    }
+
+    public function show_product($product_id){
+
+        $product = Product::find($product_id);
+        $prices = $product->prices()->orderBy('created_at', 'desc')->limit(1)->get();
+        $taxes = $product->taxes()->orderBy('created_at', 'desc')->limit(1)->get();
+        $images = $product->images()->orderBy('created_at', 'asc')->get();
+
+        return view('admin.add_category', ["product" => $product]);
+
+    }
+
 }

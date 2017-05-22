@@ -5,6 +5,7 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="{{ URL::to('src/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ URL::to('src/css/responsiveslides.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/datatable.css') }}">
     <link rel="stylesheet" href="{{ URL::to('src/css/main.css') }}">
 <style>
@@ -23,6 +24,7 @@
     <script src="{{ URL::to('src/js/jquery.js') }}" type="text/javascript"></script>
     <script src="{{ URL::to('src/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ URL::to('src/js/jquery-ui.js') }}" type="text/javascript"></script>
+    <script src="{{ URL::to('src/js/responsiveslides.js') }}" type="text/javascript"></script>
     <script src="{{ URL::to('src/js/datatable.js') }}" type="text/javascript"></script>
     {{--<script src="{{ URL::to('src/js/app.js') }}" type="text/javascript"></script>--}}
 

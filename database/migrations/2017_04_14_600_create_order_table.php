@@ -21,6 +21,7 @@ class CreateOrderTable extends Migration
                 ->onDelete("cascade");
 
             $table->double('price');
+            $table->enum('payment_status', ['not submitted', 'payment processing', 'payment successful', 'payment unsuccessful']);
             $table->timestamps();
         });
     }

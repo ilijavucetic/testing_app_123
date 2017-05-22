@@ -39,9 +39,9 @@ function showHistory(product_id){
 
     $.get("/admin/product/history/"+product_id, function(data){
 
-        var html_prices =  "<table><tr>" +
-                    "<td>Prices</td>" +
-                    "<tr></tr>";
+        var html_prices =  "<table class='table table-condensed table-striped'><thead><tr>" +
+                    "<td>Cijene</td><td></td>" +
+                    "<tr></tr></thead><tbody>";
 
 
         //data = JSON.parse(data);
@@ -49,14 +49,14 @@ function showHistory(product_id){
         var prices = data["prices"];
 
         $.each(prices, function( index, value ) {
-            html_prices += "<tr><td>" + value.price + "</td></tr>";
+            html_prices += "<tr><td>"+ value.created_at + "</td><td>" + value.price + "</td></tr>";
         });
 
-        html_prices += "</table>";
+        html_prices += "</tbody></table>";
 
-        var html_taxes =  "<table><tr>" +
-                    "<td>Taxes</td>" +
-                    "<tr></tr>";
+        var html_taxes =  "<table class='table table-condensed table-striped'><thead><tr>" +
+                    "<td>Porez</td><td></td>" +
+                    "<tr></tr></thead><tbody>";
 
 
         //data = JSON.parse(data);
@@ -64,10 +64,10 @@ function showHistory(product_id){
         var taxes = data["taxes"];
 
         $.each(taxes, function( index, value ) {
-            html_taxes += "<tr><td>" + value.tax + "</td></tr>";
+            html_taxes += "<tr><td>" + value.created_at + "</td><td>" + value.tax + "</td></tr>";
         });
 
-        html_taxes += "</table>";
+        html_taxes += "</tbody></table>";
 
        $("#history-modal-body").html(html_prices + html_taxes);
     });

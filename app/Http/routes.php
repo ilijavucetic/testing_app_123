@@ -15,6 +15,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/category/{category_id}', [
+    'uses' => 'ProductController@show_category'
+]);
+
+Route::get('/product/{product_id}', [
+    'uses' => 'ProductController@show_product'
+]);
+
+
+Route::get('/', 'ProductController@list_all');
+
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
