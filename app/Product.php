@@ -27,7 +27,7 @@ class Product extends Model
 
     public function product_images()
     {
-        return $this->hasMany('App\Product_image');
+        return $this->hasMany('App\ProductImage');
     }
     public function order_product()
     {
@@ -35,7 +35,7 @@ class Product extends Model
     }
     public function comment()
     {
-        return $this->hasMany('App\comment');
+        return $this->hasMany('App\Comment');
     }
 
 

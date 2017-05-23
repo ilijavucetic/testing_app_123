@@ -4,18 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Price;
 use App\Category;
 use App\Tax;
 use App\ProductImage;
+use App\Comment;
+use App\OrderProduct;
 
 class ProductController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
 
     public function index()
@@ -206,8 +209,9 @@ class ProductController extends Controller
         $products = json_decode(json_encode($data));
 
         $categories = Category::orderBy('created_at', 'desc')->get();
+        $orders = Category::orderBy('created_at', 'desc')->get();
 
-        return view('home', ["products" => $products, "categories" => $categories]);
+        return view('home', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders]);
 
     }
 
@@ -241,8 +245,9 @@ class ProductController extends Controller
         $products = json_decode(json_encode($data));
 
         $categories = Category::orderBy('created_at', 'desc')->get();
+        $orders = Category::orderBy('created_at', 'desc')->get();
 
-        return view('category', ["products" => $products, "categories" => $categories]);
+        return view('category', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders,]);
 
 
 
@@ -253,9 +258,84 @@ class ProductController extends Controller
         $product = Product::find($product_id);
         $prices = $product->prices()->orderBy('created_at', 'desc')->limit(1)->get();
         $taxes = $product->taxes()->orderBy('created_at', 'desc')->limit(1)->get();
-        $images = $product->images()->orderBy('created_at', 'asc')->get();
+        $images = $product->product_images()->orderBy('created_at', 'asc')->get();
+        $comments = $product->comment()->orderBy('created_at', 'asc')->get();
+        $categories = Category::orderBy('created_at', 'desc')->get();
 
-        return view('admin.add_category', ["product" => $product]);
+        $orders = Category::orderBy('created_at', 'desc')->get();
+
+
+        return view('product', ["product" => $product,
+            "categories" => $categories, "comments" => $comments, "shopping_cart_orders" => $orders,
+        "images" => $images, "price" => $prices[0], "tax" => $taxes, "main_image" => $images[0]->image]);
+
+    }
+
+    public function postCreatePost(Request $request){
+
+        $this->validate($request,[
+            'body' => 'required|max:1000',
+            'product_id' => 'required'
+        ]);
+
+        $product_id = $request['product_id'];
+
+        $comment = new Comment();
+        $comment -> description = $request['body'];
+        $comment -> product_id = $product_id;
+        $message = 'There was an error';
+        if($request->user()->comment()->save($comment)){
+            $message = 'Post succesfully created';
+
+        }
+        #return redirect()->route('product')->with(['message' => $message]);
+
+        $product = Product::find($product_id);
+        $prices = $product->prices()->orderBy('created_at', 'desc')->limit(1)->get();
+        $taxes = $product->taxes()->orderBy('created_at', 'desc')->limit(1)->get();
+        $images = $product->product_images()->orderBy('created_at', 'asc')->get();
+        $comments = $product->comment()->where("product_id", $product_id)->orderBy('created_at', 'asc')->get();
+        $categories = Category::orderBy('created_at', 'desc')->get();
+
+        return redirect()->route('product', $product_id)->with(["product" => $product, "categories" => $categories,
+            "comments" => $comments,
+            "images" => $images, "price" => $prices[0], "tax" => $taxes,
+            "main_image" => $images[0]->image,
+            'message' => $message]);
+
+
+    }
+
+    public function getDeletePost($post_id){
+
+        $comment = Comment::where('id', $post_id)->first();
+        $product_id = $comment->product_id;
+
+        if(Auth::user() != $comment->user){
+            return redirect()->back();
+        }
+        $comment->delete();
+
+        return redirect()->route('product', $product_id)->with(
+            ["message" => "Successfully deleted."]);
+
+
+    }
+
+    public function postEditPost(Request $request){
+
+        $this->validate($request, ['body' => 'required']);
+
+        $comment = Comment::find($request["postId"]);
+        $comment->description = $request["body"];
+        $comment->update();
+        return response()->json(['new_body' => $comment->description], 200);
+
+
+    }
+
+    public function add_to_cart(Request $request){
+
 
     }
 

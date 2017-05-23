@@ -20,11 +20,41 @@ Route::get('/category/{category_id}', [
 ]);
 
 Route::get('/product/{product_id}', [
-    'uses' => 'ProductController@show_product'
+    'uses' => 'ProductController@show_product',
+    'as' => 'product'
+]);
+
+Route::post('/product/{product_id}', [
+    'uses' => 'ProductController@show_product',
 ]);
 
 
 Route::get('/', 'ProductController@list_all');
+
+Route::post('/product/add_to_cart', [
+    'uses' => 'ProductController@add_to_cart',
+    'as' => 'product.add_to_cart"',
+    'middleware' => 'auth'
+]);
+
+Route::post('/create-post', [
+    'uses' => 'ProductController@postCreatePost',
+    'as' => 'comment.create',
+    'middleware' => 'auth'
+]);
+
+Route::get('/delete-post/{post_id}', [
+    'uses' => 'ProductController@getDeletePost',
+    'as' => 'comment.delete',
+    'middleware' => 'auth'
+]);
+
+Route::post('/edit-post',[
+    'uses' => 'ProductController@postEditPost',
+    'as' => 'comment.edit'
+]);
+
+
 
 Route::auth();
 
