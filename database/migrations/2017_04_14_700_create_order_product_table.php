@@ -31,9 +31,6 @@ class CreateOrderProductTable extends Migration
             $table->integer('quantity');
             $table->double('price');
             $table->double('tax');
-            $table->string('username');
-            $table->string('password');
-            $table->boolean('admin');
             $table->timestamps();
         });
     }

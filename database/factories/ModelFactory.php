@@ -64,26 +64,10 @@ $factory->define(App\Tax::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\OrderProduct::class, function (Faker\Generator $faker) {
-
-    $users = cvf_convert_object_to_array(DB::table('user')->select('id')->get());
-    $products = cvf_convert_object_to_array(DB::table('product')->select('id')->get());
-    $orders = cvf_convert_object_to_array(DB::table('order')->select('id')->get());
-
-    return [
-
-        'user_id' => $users[mt_rand(0,count($users)-1)]['id'],
-        'order_id' => $products[mt_rand(0,count($orders)-1)]['id'],
-        'product_id' => $products[mt_rand(0,count($products)-1)]['id'],
-        'price' => mt_rand(100,30000)/100,
-        'quantity' => mt_rand(1, 15)
-    ];
-});
-
 $factory->define(App\Order::class, function (Faker\Generator $faker) {
 
     $users = cvf_convert_object_to_array(DB::table('user')->select('id')->get());
-    $products = cvf_convert_object_to_array(DB::table('product')->select('id')->get());
+    #$products = cvf_convert_object_to_array(DB::table('product')->select('id')->get());
 
     return [
 
@@ -93,6 +77,33 @@ $factory->define(App\Order::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\OrderProduct::class, function (Faker\Generator $faker) {
+
+    $users = cvf_convert_object_to_array(DB::table('user')->select('id')->get());
+    $products = cvf_convert_object_to_array(DB::table('product')->select('id')->get());
+    $orders = cvf_convert_object_to_array(DB::table('order')->select('id')->get());
+
+    return [
+
+        'order_id' => $products[mt_rand(0,count($orders)-1)]['id'],
+        'product_id' => $products[mt_rand(0,count($products)-1)]['id'],
+        'price' => mt_rand(100,30000)/100,
+        'quantity' => mt_rand(1, 15)
+    ];
+});
+
+$factory->define(App\Comment::class, function (Faker\Generator $faker) {
+    $users =  cvf_convert_object_to_array(DB::table('user')->select('id')->get());
+    $products = cvf_convert_object_to_array(DB::table('product')->select('id')->get());
+
+    return [
+
+        'user_id' => $users[mt_rand(0,count($users)-1)]['id'],
+        'product_id' => $products[mt_rand(0,count($products)-1)]['id'],
+        'description' => $faker->paragraphs($nb = 3, $asText = true),
+    ];
+
+});
 
 function cvf_convert_object_to_array($data) {
 

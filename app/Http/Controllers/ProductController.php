@@ -264,10 +264,24 @@ class ProductController extends Controller
 
         $orders = Category::orderBy('created_at', 'desc')->get();
 
+        if(empty($prices->toArray()))
+            $price = (object) array('price' => '0');
+        else
+            $price = $prices[0];
+
+        if(empty($taxes->toArray()))
+            $tax = (object) array('tax' => '0');
+        else
+            $tax = $taxes[0];
+
+        if(empty($images->toArray()))
+            $image = (object) array('image' => '0');
+        else
+            $image = $images[0];
 
         return view('product', ["product" => $product,
             "categories" => $categories, "comments" => $comments, "shopping_cart_orders" => $orders,
-        "images" => $images, "price" => $prices[0], "tax" => $taxes, "main_image" => $images[0]->image]);
+        "images" => $images, "price" => $price, "tax" => $tax, "main_image" => $image->image]);
 
     }
 

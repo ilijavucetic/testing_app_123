@@ -75,7 +75,7 @@
                     <ul class='nav nav-pills'>
                         <li>
                             <a href="/my/shopping_cart"><img src="/src/glyphicons/glyphicons-203-shopping-cart.png"><span
-                                        class="badge">@if(Auth::user()){{count($shopping_cart_orders)}} @else {{"-"}}@endif</span></a>
+                                        class="badge">@if(Auth::user() && isset($shopping_cart_orders)){{count($shopping_cart_orders)}} @else {{"-"}}@endif</span></a>
                         </li>
                     </ul>
                 </div>
