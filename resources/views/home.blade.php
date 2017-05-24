@@ -68,7 +68,7 @@
                                     <div class="row">
                                         <br>
                                         <div class="col-xs-12">
-                                            <a href="/special_offer">
+                                            <a href="/product_all/">
                                                 Browse all
                                             </a>
                                         </div>

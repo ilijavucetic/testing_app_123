@@ -24,6 +24,11 @@ Route::get('/product/{product_id}', [
     'as' => 'product'
 ]);
 
+Route::get('/product_all/', [
+    'uses' => 'ProductController@show_product_all',
+    'as' => 'product_all'
+]);
+
 Route::post('/product/{product_id}', [
     'uses' => 'ProductController@show_product',
 ]);

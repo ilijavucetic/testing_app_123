@@ -209,7 +209,7 @@ class ProductController extends Controller
         $products = json_decode(json_encode($data));
 
         $categories = Category::orderBy('created_at', 'desc')->get();
-        $orders = Category::orderBy('created_at', 'desc')->get();
+        $orders = OrderProduct::orderBy('created_at', 'desc')->get();
 
         return view('home', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders]);
 
@@ -353,4 +353,89 @@ class ProductController extends Controller
 
     }
 
+    public function show_product_all(){
+
+//        $products =  \DB::table('product')
+//            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+//            ->leftJoin('price', 'price.product_id', '=', 'product.id')
+//            ->leftJoin('tax', 'tax.product_id', '=', 'product.id')
+//            ->leftJoin('product_image', 'product_image.product_id', '=', 'product.id')
+//            ->select(
+//                'product.id',
+//                'product.name',
+//                'product.description',
+//                'product.category_id',
+//                'category.name as category_name',
+//                'price.price',
+//                'tax.tax',
+//                'image',
+//                'product.created_at',
+//                'product.updated_at'
+//            )->orderBy('product.id', 'asc')
+//            ->orderBy('price.id', 'asc')->orderBy('product_image.id', 'asc')->limit(15)->get();
+
+        $products = \DB::table('product AS t1')
+            ->leftJoin(\DB::raw('(SELECT * FROM price productA WHERE id = (SELECT MAX(id) FROM price productB WHERE productA.product_id=productB.product_id)) AS t2'), function($join) {
+                $join->on('t1.id', '=', 't2.product_id');
+            })
+            ->leftJoin(\DB::raw('(SELECT * FROM tax productAA WHERE id = (SELECT MAX(id) FROM tax productBB WHERE productAA.product_id=productBB.product_id)) AS t3'), function($join) {
+                $join->on('t1.id', '=', 't3.product_id');})
+            ->leftJoin(\DB::raw('(SELECT * FROM product_image productAAA WHERE id = (SELECT MIN(id) FROM product_image productBBB WHERE productAAA.product_id=productBBB.product_id)) AS t4'), function($join) {
+                $join->on('t1.id', '=', 't4.product_id');})
+            ->leftJoin('category', 'category.id', '=', 't1.category_id')
+            ->select(
+                't1.id',
+                't1.name',
+                't1.description',
+                't1.category_id',
+                'category.name as category_name',
+                't2.price',
+                't3.tax',
+                't4.image',
+                't1.created_at',
+                't1.updated_at'
+            )->orderBy('t1.id', 'asc')
+            ->paginate(15);
+
+//        var_dump($products);
+//
+//
+//
+//        $products =  \DB::table('product')
+//            ->leftJoin('category', 'category.id', '=', 'product.category_id')
+//            ->leftJoin('price', 'price.product_id', '=', 'product.id')
+//            ->leftJoin('tax', 'tax.product_id', '=', 'product.id')
+//            ->leftJoin('product_image', 'product_image.product_id', '=', 'product.id')
+//            ->select(
+//                'product.id',
+//                'product.name',
+//                'product.description',
+//                'product.category_id',
+//                'category.name as category_name',
+//                'price.price',
+//                'tax.tax',
+//                'image',
+//                'product.created_at',
+//                'product.updated_at'
+//            )->orderBy('product.id', 'asc')
+//            ->orderBy('price.id', 'asc')->orderBy('product_image.id', 'asc')->limit(15)->get();
+//
+//        $array = json_decode(json_encode($products), true);
+//        $data = [];
+//        foreach($array as $pr){
+//
+////            if(empty($pr["price"]))
+////                $pr["price"] = 0;
+//            $data[$pr["id"]] = $pr;
+//        }
+//        $products = json_decode(json_encode($data));
+//        $products = $products->paginate();
+
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $orders = OrderProduct::orderBy('created_at', 'desc')->get();
+
+        return view('product_all', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders]);
+
+
+    }
 }
