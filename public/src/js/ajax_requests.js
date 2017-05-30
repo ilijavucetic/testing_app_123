@@ -145,8 +145,8 @@ $(document).ready(function () {
         var shipping_id = $('#select-shipping').val();
         $.ajax({
             //url : $(this).attr('action') || window.location.pathname,
-            url: window.location.href,
-            //url: "product.add_to_cart",
+            //url: window.location.href,
+            url: url2,
             type: "POST",
             data: {
                 "add_to_cart": add_to_cart,
@@ -158,8 +158,9 @@ $(document).ready(function () {
                 "cart_shipping_id": shipping_id,
                 "_token" : token
             },
-            success: function () {
-                alert('added');
+            success: function (data) {
+                data = JSON.parse(data);
+                alert(data);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 //console.log(jqXHR);

@@ -33,12 +33,16 @@ Route::post('/product/{product_id}', [
     'uses' => 'ProductController@show_product',
 ]);
 
-
 Route::get('/', 'ProductController@list_all');
 
 Route::post('/product/add_to_cart', [
     'uses' => 'ProductController@add_to_cart',
-    'as' => 'product.add_to_cart"',
+    'as' => 'product.add_to_cart',
+    'middleware' => 'auth'
+]);
+Route::post('/product/add_to_cart2', [
+    'uses' => 'ProductController@add_to_cart',
+    'as' => 'product.add_to_cart2',
     'middleware' => 'auth'
 ]);
 
@@ -59,7 +63,21 @@ Route::post('/edit-post',[
     'as' => 'comment.edit'
 ]);
 
+Route::post('/buy_me',[
+    'uses' => 'ProductController@add_to_cart',
+    'as' => 'product.buy',
+    'middleware' => 'auth'
+]);
 
+
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
+
+Route::auth();
+
+Route::get('/home', 'HomeController@index');
 
 Route::auth();
 
@@ -69,13 +87,12 @@ Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
-Route::auth();
+Route::get('/shopping_cart', [
+    'uses' => 'ProductController@listCurrentOrder',
+    'as' => 'shopping_cart',
+    'middleware' => 'auth'
+]);
 
-Route::get('/home', 'HomeController@index');
-
-Route::auth();
-
-Route::get('/home', 'HomeController@index');
 
 //Route::get('/admin/add_product', function () {
 //    return view('admin.add_product');

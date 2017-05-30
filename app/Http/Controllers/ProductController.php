@@ -12,6 +12,7 @@ use App\Tax;
 use App\ProductImage;
 use App\Comment;
 use App\OrderProduct;
+use App\Order;
 
 class ProductController extends Controller
 {
@@ -275,7 +276,7 @@ class ProductController extends Controller
             $tax = $taxes[0];
 
         if(empty($images->toArray()))
-            $image = (object) array('image' => '0');
+            $image = (object) array('image' => 'http://lorempixel.com/350/250/technics/?3');
         else
             $image = $images[0];
 
@@ -297,9 +298,9 @@ class ProductController extends Controller
         $comment = new Comment();
         $comment -> description = $request['body'];
         $comment -> product_id = $product_id;
-        $message = 'There was an error';
+        $message = 'Greska prilokom unosa.';
         if($request->user()->comment()->save($comment)){
-            $message = 'Post succesfully created';
+            $message = 'Komentar unjet uspješno';
 
         }
         #return redirect()->route('product')->with(['message' => $message]);
@@ -311,10 +312,26 @@ class ProductController extends Controller
         $comments = $product->comment()->where("product_id", $product_id)->orderBy('created_at', 'asc')->get();
         $categories = Category::orderBy('created_at', 'desc')->get();
 
+        if(empty($prices->toArray()))
+            $price = (object) array('price' => '0');
+        else
+            $price = $prices[0];
+
+//        if(empty($taxes->toArray()))
+//            $tax = (object) array('tax' => '0');
+//        else
+//            $tax = $taxes[0];
+
+        if(empty($images->toArray()))
+            $image = (object) array('image' => 'http://lorempixel.com/350/250/technics/?3');
+        else
+            $image = $images[0]->image;
+
         return redirect()->route('product', $product_id)->with(["product" => $product, "categories" => $categories,
             "comments" => $comments,
-            "images" => $images, "price" => $prices[0], "tax" => $taxes,
-            "main_image" => $images[0]->image,
+            "images" => $images,
+            "price" =>$price, "tax" => $taxes,
+            "main_image" => $image,
             'message' => $message]);
 
 
@@ -350,6 +367,58 @@ class ProductController extends Controller
 
     public function add_to_cart(Request $request){
 
+
+        $user_obj = $request->user();
+        $user_id = $user_obj->id;
+
+        $product_id = $request["cart_product_id"];
+        $quantity = $request["cart_quantity"];
+
+        $product = Product::find($product_id);
+        $prices = $product->prices()->orderBy('created_at', 'desc')->first()->price;
+
+        $total_price = $prices * $quantity;
+
+        $order = new Order();
+        $order->user_id = $user_id;
+        $order->payment_status = "not submitted";
+        $order->price = $total_price;
+        $order->save();
+        $order_id = $order->id;
+
+//        $cart = new OrderProduct();
+//        $cart->order_id = $order_id;
+//        $cart->product_id = $product_id;
+//        $cart->quantity = $quantity;
+//        $cart->save();
+
+        echo json_encode(["1" => $order_id]);
+
+
+    }
+
+    public function listCurrentOrder(Request $request){
+
+        echo json_encode(["1" => 1]);
+
+        $user_obj = $request->user();
+        $user_id = $user_obj->id;
+
+        #$order = $user_obj->order()->where('payment_status', 'not submitted')->get();
+
+
+        $order =$request->user()->order()
+            ->where('payment_status', 'not submitted')
+            ->orderBy('created_at', 'asc')->get();
+
+        $order_id = $order[0]->id;
+
+        $order = Order::find(40);
+        $order_products = $order->order_product()->orderBy('created_at', 'asc')->get();
+
+        return view('shopping_cart', ["order" => $order_products, "main_image" => "0",
+            "cart_orders" => $order_products,
+        "user_info" => $user_obj]);
 
     }
 

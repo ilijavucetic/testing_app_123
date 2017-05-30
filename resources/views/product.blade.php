@@ -111,12 +111,6 @@
             </div>
         </div>
 
-
-
-        <div class="row">
-            <div class=""><h3>User reviews:</h3></div>
-        </div>
-
         <div class="row">
 
             <section class="row new-post">
@@ -128,7 +122,7 @@
                         <div class="form-group">
                             <textarea  class="form-control" name="body" id="body"  rows="5"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create Post</button>
+                        <button type="submit" class="btn btn-primary">Moj komentar</button>
                         <input type="hidden" name="_token" value="{{ Session::token() }}">
                     </form>
                 </div>
@@ -160,10 +154,6 @@
                     @endforeach
                 </div>
             </section>
-
-            <!-- Trigger the modal with a button -->
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
-
             <!-- Modal -->
             <div id="edit-modal" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -196,7 +186,8 @@
 
     <script>
         var token = '{{ Session::token() }}';
-        var url = '{{ route('comment.edit') }}'
+        var url = '{{ route('comment.edit') }}';
+        var url2 = '{{ route('product.buy') }}';
     </script>
 
 @endsection
