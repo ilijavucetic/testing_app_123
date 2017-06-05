@@ -160,7 +160,12 @@ $(document).ready(function () {
             },
             success: function (data) {
                 data = JSON.parse(data);
-                alert(data);
+                $("#ajax-message-span").html(data["message"]);
+                $("#ajax-message").css("display", "block");
+                var badge = $('.badge');
+                var number = parseInt(badge.html());
+                badge.html(number + 1);
+                //$("#quantity").val(0);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 //console.log(jqXHR);

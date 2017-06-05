@@ -40,11 +40,11 @@ Route::post('/product/add_to_cart', [
     'as' => 'product.add_to_cart',
     'middleware' => 'auth'
 ]);
-Route::post('/product/add_to_cart2', [
-    'uses' => 'ProductController@add_to_cart',
-    'as' => 'product.add_to_cart2',
-    'middleware' => 'auth'
-]);
+//Route::post('/product/add_to_cart2', [
+//    'uses' => 'ProductController@add_to_cart',
+//    'as' => 'product.add_to_cart2',
+//    'middleware' => 'auth'
+//]);
 
 Route::post('/create-post', [
     'uses' => 'ProductController@postCreatePost',
@@ -66,6 +66,19 @@ Route::post('/edit-post',[
 Route::post('/buy_me',[
     'uses' => 'ProductController@add_to_cart',
     'as' => 'product.buy',
+    'middleware' => 'auth'
+]);
+
+Route::get('/delete-product-order/{order_id}', [
+    'uses' => 'ProductController@getDeleteProductOrder',
+    'as' => 'delete_product_order',
+    'middleware' => 'auth'
+]);
+
+
+Route::get('/buy-product-order/{order_id}', [
+    'uses' => 'ProductController@buyOrder',
+    'as' => 'buy_product_order',
     'middleware' => 'auth'
 ]);
 

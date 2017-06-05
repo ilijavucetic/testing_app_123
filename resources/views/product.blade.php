@@ -50,7 +50,8 @@
                         {{--{{$product->user->toArray()--}}
                     {{--['username']}} </a></h4>--}}
                 <h4></h4>
-                <h4>Price: {{$price->price}}</h4>
+                <h4>Cijena: {{$price->price}}</h4>
+                <h4>Porez: {{$tax->tax}}</h4>
 
                 <hr>
 
@@ -60,7 +61,7 @@
                                  style="line-height:30px; vertical-align: middle;height:40px; width:50px;text-align: center;border: solid 2px transparent;border-radius: 5px;"
                                  id="quantity_decrease">-
                             </div>
-                            <input class="col-xs-2" value='0' class='form-control'
+                            <input class="col-xs-2 form-control" value='0'
                                    style="height:40px;line-height:40px; width:80px;text-align: center;vertical-align: middle;border: solid 1px;"
                                    id="quantity">
 

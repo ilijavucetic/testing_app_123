@@ -16,3 +16,10 @@
         </div>
     </div>
 @endif
+
+
+<div class="row" id="ajax-message" style="display: none">
+    <div class="col-md-4 col-md-offset-4 success">
+        <span id="ajax-message-span"></span>
+    </div>
+</div>

@@ -83,9 +83,11 @@
                 <hr>
                 <div class="row">
                     <div class="col-xs-12">
-                        <h2>Most popular products</h2>
+                        <h2>Najpopularniji proizvodi</h2>
                     </div>
                 </div>
+
+
                 <div class="row">
                     <div class="col-xs-12">
                         <ul class="nav nav-tabs">
@@ -93,8 +95,97 @@
                             <li><a href="#month" data-toggle="tab">Past month</a></li>
                             <li class="active"><a href="#all" data-toggle="tab" aria-expanded="true">All time</a></li>
                         </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade" id="week">
+                                <div class="container-fluid">
+                                   <?
+                                    $i = 1;
+                                    ?>
+                                       @foreach($popular_products_month as $product_week)
+                                           @if(fmod($i,4)==0)
+                                               <div class="row">
+                                                   @endif
+                                                   {{--ispisivanje proizvoda--}}
+                                                   <div class="col-xs-3"
+                                                        id="product-data-{{$product_week->id}}"
+                                                        style="padding:20px;   align-content: center;font-size: 8pt; border:1px solid transparent">
+
+                                                       <div class="row">
+                                                           <div class="col-xs-12" style="text-align: center">
+                                                               <h4>{{$product_week_count}}</h4>
+                                                           </div>
+                                                           <div class="col-xs-12" style="padding: 5px; align: center">
+                                                               <a href="/pages/product/{{$product_week->id}}">
+                                                                   <img style="max-width:100%;max-height:100%;"
+                                                                        class="img-rounded"
+                                                                        src="http://lorempixel.com/350/250/technics/?{{$product_week->id}}">
+                                                               </a>
+                                                           </div>
+                                                       </div>
+
+
+                                                       <div class="row">
+                                                           <div class="col-xs-12" style="font-size: 14pt;">
+                                                               <a href="/pages/product/{{$product_week->id}}">
+                                                                   {{$product_week->name}}
+                                                               </a>
+                                                           </div>
+                                                       </div>
+
+
+                                                       <div class="row">
+                                                           {{--Price je u id-u div elementa da se prava vrijednost ne bi
+                                                           gubila pri promjenama koriscene valute--}}
+                                                           <div class="col-xs-12 product_price"
+                                                                id="{{$product_week->price}}">
+                                                               <h5>{{"Price: " . $product_week->price}}</h5>
+                                                           </div>
+                                                       </div>
+                                                       <div class="row">
+                                                           <div class="col-xs-12">
+                                                           </div>
+
+                                                       </div>
+                                                       <div class="row">
+                                                           <div class="col-xs-7">
+                                                               <h5>
+                                                               </h5>
+                                                           </div>
+
+                                                       </div>
+                                                   </div>
+
+                                               @if(fmod($i+1,4)==0)
+                                </div>
+                                @endif
+                                @endforeach
+                                       </div>
+
+                            <div class="tab-pane fade" id="month">
+                                <div class="container-fluid">
+
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in active" id="all">
+                                <div class="container-fluid">
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+
+
+                {{--<div class="row">--}}
+                    {{--<div class="col-xs-12">--}}
+                        {{--<ul class="nav nav-tabs">--}}
+                            {{--<li><a href="#week" data-toggle="tab">This week</a></li>--}}
+                            {{--<li><a href="#month" data-toggle="tab">Past month</a></li>--}}
+                            {{--<li class="active"><a href="#all" data-toggle="tab" aria-expanded="true">All time</a></li>--}}
+                        {{--</ul>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
                 <hr>
 
                 {{--'products','top_product_info','top_seller_info','popular_products_week','popular_products_month','

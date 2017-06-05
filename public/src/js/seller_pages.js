@@ -20,7 +20,7 @@ $(document).ready(function () {
             $(this).html('Copied');
             setTimeout(function() {
                 $("#copy-product-name").html('Copy Name');
-            }, 800);;
+            }, 800);
         }
     });
     $("#copy-buyer-name").click(function(){
