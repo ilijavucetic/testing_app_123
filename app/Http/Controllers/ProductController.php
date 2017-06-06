@@ -631,6 +631,15 @@ class ProductController extends Controller
 
     public function show_product_all(){
 
+        $user_obj = Auth::user();
+        if($user_obj){
+            $user_id = $user_obj->id;
+        }
+        else{
+            $user_id = 0;
+        }
+
+
 //        $products =  \DB::table('product')
 //            ->leftJoin('category', 'category.id', '=', 'product.category_id')
 //            ->leftJoin('price', 'price.product_id', '=', 'product.id')
@@ -708,7 +717,12 @@ class ProductController extends Controller
 //        $products = $products->paginate();
 
         $categories = Category::orderBy('created_at', 'desc')->get();
-        $orders = OrderProduct::orderBy('created_at', 'desc')->get();
+        $orders = \DB::table('order')
+            ->join('order_product', 'order.id', '=', 'order_product.order_id')
+            ->select('order_product.*')
+            ->where(["payment_status" => "not submitted", "user_id" => $user_id])
+            ->get();
+
 
         return view('product_all', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders]);
 
