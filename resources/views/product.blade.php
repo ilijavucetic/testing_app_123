@@ -36,7 +36,7 @@
                             img-rounded"
                                  id="prod-full">
 
-                            <div class="prod-pic-text"> {{$main_image}} </div>
+                            <div class="prod-pic-text"></div>
                         </div>
                     </div>
                 </div>
