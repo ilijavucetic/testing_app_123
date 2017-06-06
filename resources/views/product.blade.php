@@ -61,7 +61,7 @@
                                  style="line-height:30px; vertical-align: middle;height:40px; width:50px;text-align: center;border: solid 2px transparent;border-radius: 5px;"
                                  id="quantity_decrease">-
                             </div>
-                            <input class="col-xs-2 form-control" value='0'
+                            <input readonly class="col-xs-2 form-control" value='0'
                                    style="height:40px;line-height:40px; width:80px;text-align: center;vertical-align: middle;border: solid 1px;"
                                    id="quantity">
 
@@ -94,7 +94,7 @@
         </div>
 
         <div class="row">
-            <div class=""><h3>Product description:</h3></div>
+            <div class=""><h3>Opis Proizvoda:</h3></div>
         </div>
 
         <div class="product-description row" style="clear:both; padding-bottom: 30px;">

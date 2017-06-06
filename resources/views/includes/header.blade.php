@@ -38,8 +38,8 @@
                             </a>
 
                             <ul class="dropdown-menu">
-                                <li><a href="/my/orders">Moje narudžbe</a></li>
-                                <li><a href="/my/account">Podesavanja</a></li>
+                                {{--<li><a href="/my/orders">Moje narudžbe</a></li>--}}
+                                {{--<li><a href="/my/account">Podesavanja</a></li>--}}
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Odjavi se</a></li>
 
                             </ul>

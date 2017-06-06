@@ -28,6 +28,9 @@ Route::get('/product_all/', [
     'uses' => 'ProductController@show_product_all',
     'as' => 'product_all'
 ]);
+Route::get('/pages/search', [
+    'uses' => 'ProductController@show_product_searched'
+]);
 
 Route::post('/product/{product_id}', [
     'uses' => 'ProductController@show_product',

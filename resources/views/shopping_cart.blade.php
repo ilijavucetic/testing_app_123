@@ -23,7 +23,8 @@
             <div class="row order-row-{{$order->id}}">
                 <div class="col-xs-1">
                     <img class='img-thumbnail' style='height:100px;width:150px;'
-                         src="{{$order->product->product_images()->first()["image"]}}">
+                         src="{{$order->image == ""?"/images/products/im10.jpg":$order->image }}">
+                         {{--src="{{$order->product->product_images()->first()["image"]}}">--}}
                 </div>
                 <div class="col-xs-2">
                     <div class="row" style="">Proizvod:</div>
@@ -94,9 +95,9 @@
         @endforeach
         @if(count($shopping_cart_orders)!=0)
             <div class="row">
-                <div class="col-xs-4 col-xs-offset-2">
+                <div class="col-xs-4 col-xs-offset-3">
                     <div class="row">
-                        <div class="col-xs-12"><h3>Total payment: {{$total_price}}</h3></div>
+                        <div class="col-xs-12"><h3>Ukupna cijena: {{$total_price}}</h3></div>
                     </div>
                     <div class="row">
                         <div class="row"><a href="{{route('buy_product_order', $order_id)}}"

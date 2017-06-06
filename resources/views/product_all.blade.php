@@ -26,9 +26,6 @@
 
                 <div class="row">
 
-                    <div class="col-xs-12">
-                        <h2>Products currently on discount:</h2>
-                    </div>
                     <hr>
                 </div>
                 <?
@@ -48,7 +45,9 @@
                                     </div>
                                     <div class="col-xs-12" style="padding: 5px; align: center">
                                         <a href="/product/{{$product->id}}">
-                                            <img style="max-width:100%;max-height:100%;" class="img-rounded" src="http://lorempixel.com/350/250/technics/?{{$product->id}}">
+                                            <img style="max-width:100%;max-height:100%;" class="img-rounded"
+                                                 src="{{$product->image == ""?"/images/products/im10.jpg":$product->image }}"
+                                                    >
                                         </a>
                                     </div>
 
@@ -76,12 +75,12 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <h4>
-                                            {{"By "}}<a
-                                                    href="/pages/seller/{{$product->id}}">
+                                        {{--<h4>--}}
+                                            {{--{{"By "}}<a--}}
+                                                    {{--href="/pages/seller/{{$product->id}}">--}}
                                                 {{--{{$product->user->toArray()['username']}}--}}
-                                            </a>
-                                        </h4>
+                                            {{--</a>--}}
+                                        {{--</h4>--}}
                                     </div>
 
                                 </div>

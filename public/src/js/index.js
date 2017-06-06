@@ -21,4 +21,16 @@ $(document).ready(function(){
         before: function(){},   // Function: Before callback
         after: function(){}     // Function: After callback
     });
+
+
+    $("[id^=product-data-]").hover(function () {
+            $(this).css('border', 'solid 1px');
+            $(this).css('border-style', 'outset');
+            $(this).css('background-color', 'white');
+        },
+        function () {
+            $(this).css('border', '1px solid transparent');
+            $(this).css('background-color', 'inherit');
+        });
+
 });

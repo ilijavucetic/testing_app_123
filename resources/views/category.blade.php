@@ -34,7 +34,8 @@
                                                         <a href="/product/{{$product->id}}">
                                                             <img style="max-width:100%;max-height:100%;"
                                                                  class="img-rounded"
-                                                                 src="http://lorempixel.com/350/250/technics/?{{$product->id}}">
+                                                                 src="{{$product->image == ""?"/images/products/im10.jpg":$product->image }}"
+                                                                    >
                                                         </a>
                                                     </div>
 

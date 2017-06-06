@@ -13,6 +13,7 @@ use App\ProductImage;
 use App\Comment;
 use App\OrderProduct;
 use App\Order;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -61,7 +62,7 @@ class ProductController extends Controller
                 't4.image',
                 't1.created_at',
                 't1.updated_at')
-            ->orderBy('t1.id', 'asc')->orderBy('t2.id', 'asc')->get()->limit(5);
+            ->orderBy('t1.id', 'asc')->orderBy('t2.id', 'asc')->get();
 
         $popular_products_week = $products;
 
@@ -138,7 +139,7 @@ class ProductController extends Controller
                 foreach($images_array as $im){
                     $image = new ProductImage();
                     $image->product_id = $inserted_id;
-                    $image->image = $im;
+                    $image->image = "/images/products/" . $im;
                     $image->main = 0;
                     $saved_image = $image->save();
                     if(!$saved_image)
@@ -177,7 +178,7 @@ class ProductController extends Controller
                 foreach($images_array as $im){
                     $image = new ProductImage();
                     $image->product_id = $product_id;
-                    $image->image = $im;
+                    $image->image = "/images/products/" . $im;
                     $image->main = 0;
                     $saved_image = $image->save();
                     if(!$saved_image)
@@ -243,6 +244,7 @@ class ProductController extends Controller
             ->leftJoin(\DB::raw('(SELECT * FROM product_image productAAA WHERE id = (SELECT MIN(id) FROM product_image productBBB WHERE productAAA.product_id=productBBB.product_id)) AS t4'), function($join) {
                 $join->on('t1.id', '=', 't4.product_id');})
             ->leftJoin('category', 'category.id', '=', 't1.category_id')
+            ->leftJoin('order_product', 'order_product.product_id', '=', 't1.id')
             ->select(
                 't1.id',
                 't1.name',
@@ -253,8 +255,66 @@ class ProductController extends Controller
                 't3.tax',
                 't4.image',
                 't1.created_at',
-                't1.updated_at')
-            ->orderBy('t2.id', 'asc')->orderBy('t4.id', 'asc')->limit(8)->get();
+                't1.updated_at',
+                \DB::raw('SUM(quantity) as orders'))
+            ->orderBy('orders', 'desc')->orderBy('t4.id', 'asc')->groupBy("t1.id")->limit(8)->get();
+
+        $now = Carbon::now();
+        $last_week = Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s', strtotime('-1 week')));
+        $last_month = Carbon::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s', strtotime('-30 day')));
+//
+//        $last_week = date('Y-m-d H:i:s', strtotime('-1 week'));
+//        $last_month = date('Y-m-d H:i:s', strtotime('-30 day'));
+//        $mytime = Carbon::now();
+
+
+        $popular_products_week = \DB::table('product AS t1')
+            ->leftJoin(\DB::raw('(SELECT * FROM price productA WHERE id = (SELECT MAX(id) FROM price productB WHERE productA.product_id=productB.product_id)) AS t2'), function($join) {
+                $join->on('t1.id', '=', 't2.product_id');
+            })
+            ->leftJoin(\DB::raw('(SELECT * FROM tax productAA WHERE id = (SELECT MAX(id) FROM tax productBB WHERE productAA.product_id=productBB.product_id)) AS t3'), function($join) {
+                $join->on('t1.id', '=', 't3.product_id');})
+            ->leftJoin(\DB::raw('(SELECT * FROM product_image productAAA WHERE id = (SELECT MIN(id) FROM product_image productBBB WHERE productAAA.product_id=productBBB.product_id)) AS t4'), function($join) {
+                $join->on('t1.id', '=', 't4.product_id');})
+            ->leftJoin('category', 'category.id', '=', 't1.category_id')
+            ->leftJoin('order_product', 'order_product.product_id', '=', 't1.id')
+            ->select(
+                't1.id',
+                't1.name',
+                't1.description',
+                't1.category_id',
+                'category.name as category_name',
+                't2.price',
+                't3.tax',
+                't4.image',
+                't1.created_at',
+                't1.updated_at',
+                \DB::raw('SUM(quantity) as orders'))
+            ->orderBy('orders', 'desc')->orderBy('t4.id', 'asc')->whereDate('order_product.created_at', '>', $last_week)->groupBy("t1.id")->limit(8)->get();
+
+        $popular_products_month = \DB::table('product AS t1')
+            ->leftJoin(\DB::raw('(SELECT * FROM price productA WHERE id = (SELECT MAX(id) FROM price productB WHERE productA.product_id=productB.product_id)) AS t2'), function($join) {
+                $join->on('t1.id', '=', 't2.product_id');
+            })
+            ->leftJoin(\DB::raw('(SELECT * FROM tax productAA WHERE id = (SELECT MAX(id) FROM tax productBB WHERE productAA.product_id=productBB.product_id)) AS t3'), function($join) {
+                $join->on('t1.id', '=', 't3.product_id');})
+            ->leftJoin(\DB::raw('(SELECT * FROM product_image productAAA WHERE id = (SELECT MIN(id) FROM product_image productBBB WHERE productAAA.product_id=productBBB.product_id)) AS t4'), function($join) {
+                $join->on('t1.id', '=', 't4.product_id');})
+            ->leftJoin('category', 'category.id', '=', 't1.category_id')
+            ->leftJoin('order_product', 'order_product.product_id', '=', 't1.id')
+            ->select(
+                't1.id',
+                't1.name',
+                't1.description',
+                't1.category_id',
+                'category.name as category_name',
+                't2.price',
+                't3.tax',
+                't4.image',
+                't1.created_at',
+                't1.updated_at',
+                \DB::raw('SUM(quantity) as orders'))
+            ->orderBy('orders', 'desc')->whereDate('order_product.created_at', '>', $last_month)->groupBy("t1.id")->limit(8)->get();
 
 
 
@@ -265,9 +325,9 @@ class ProductController extends Controller
 //        }
 //        $products = json_decode(json_encode($data))
 
-        $popular_products_week  = $products;
-        $popular_products_month   = $products;
-        $popular_products_month   = $products;
+//        $popular_products_week  = $products;
+//        $popular_products_month   = $products;
+        $popular_products_all   = $products;
         $product_week_count  = count($popular_products_week);
         $product_month_count   = count($popular_products_month);
 
@@ -284,6 +344,7 @@ class ProductController extends Controller
             "shopping_cart_orders" => $orders,
             "popular_products_week" => $popular_products_week,
             "popular_products_month" => $popular_products_month,
+            "popular_products_all" => $popular_products_all,
         "product_week_count" => $product_week_count,
         "product_month_count" => $product_month_count,
 
@@ -383,7 +444,7 @@ class ProductController extends Controller
             $tax = $taxes[0];
 
         if(empty($images->toArray()))
-            $image = (object) array('image' => 'http://lorempixel.com/350/250/technics/?3');
+            $image = (object) array('image' => '/images/products/im10.jpg');
         else
             $image = $images[0];
 
@@ -430,7 +491,7 @@ class ProductController extends Controller
 //            $tax = $taxes[0];
 
         if(empty($images->toArray()))
-            $image = (object) array('image' => 'http://lorempixel.com/350/250/technics/?3');
+            $image = (object) array('image' => '/images/products/im10.jpg');
         else
             $image = $images[0]->image;
 
@@ -674,6 +735,54 @@ class ProductController extends Controller
         return redirect()->route('shopping_cart')->with(
             ["message" => "Uspješno kupljeno."]);
 
+
+
+    }
+
+    public function show_product_searched(){
+
+        $user_obj = Auth::user();
+        if($user_obj){
+            $user_id = $user_obj->id;
+        }
+        else{
+            $user_id = 0;
+        }
+
+        $search = $_GET["search"];
+
+        $products = \DB::table('product AS t1')
+            ->leftJoin(\DB::raw('(SELECT * FROM price productA WHERE id = (SELECT MAX(id) FROM price productB WHERE productA.product_id=productB.product_id)) AS t2'), function($join) {
+                $join->on('t1.id', '=', 't2.product_id');
+            })
+            ->leftJoin(\DB::raw('(SELECT * FROM tax productAA WHERE id = (SELECT MAX(id) FROM tax productBB WHERE productAA.product_id=productBB.product_id)) AS t3'), function($join) {
+                $join->on('t1.id', '=', 't3.product_id');})
+            ->leftJoin(\DB::raw('(SELECT * FROM product_image productAAA WHERE id = (SELECT MIN(id) FROM product_image productBBB WHERE productAAA.product_id=productBBB.product_id)) AS t4'), function($join) {
+                $join->on('t1.id', '=', 't4.product_id');})
+            ->leftJoin('category', 'category.id', '=', 't1.category_id')
+            ->select(
+                't1.id',
+                't1.name',
+                't1.description',
+                't1.category_id',
+                'category.name as category_name',
+                't2.price',
+                't3.tax',
+                't4.image',
+                't1.created_at',
+                't1.updated_at'
+            )->orderBy('t1.id', 'asc')->where("t1.description", 'like', "%".$search."%")->orWhere('t1.name', 'like', "%".$search."%")->paginate(15);
+
+
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        $orders = \DB::table('order')
+            ->join('order_product', 'order.id', '=', 'order_product.order_id')
+            ->select('order_product.*')
+            ->where(["payment_status" => "not submitted", "user_id" => $user_id])
+            ->get();
+
+
+        return view('product_all', ["products" => $products, "categories" => $categories, "shopping_cart_orders" => $orders]);
 
 
     }
