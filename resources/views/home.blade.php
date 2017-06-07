@@ -34,7 +34,8 @@
                                                 {{--src="http://lorempixel.com/350/250/technics/?{{$discount_product->id}}"--}}
 
                                                 src="{{$discount_product->image == ""?"/images/products/im10.jpg":$discount_product->image }}">
-                                        <p class="caption">{{$discount_product->name}}</p></a>
+                                        {{--<p class="caption">{{$discount_product->name}}</p>--}}
+                                    </a>
                                 </div>
                                 <div class="col-xs-5">
                                     <div class="row">

@@ -66,7 +66,7 @@
                         <div class="form-group">
                             <div class="input-group">
                                 <input type="text" name="search" class="form-control">
-                                <span class="input-group-btn"><button class="btn btn-default" type="submit">Search</button></span>
+                                <span class="input-group-btn"><button class="btn btn-default" type="submit">Pretraži</button></span>
                             </div>
                         </div>
                     </form>
